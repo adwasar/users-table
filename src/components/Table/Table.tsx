@@ -27,7 +27,7 @@ const NoUsersState = () => (
 
 const Table = () => {
   const dispatch = useAppDispatch()
-  const users = useAppSelector((state) => state.users.entities)
+  const filteredUsers = useAppSelector((state) => state.users.filteredEntities)
   const loading = useAppSelector((state) => state.users.loading)
   const error = useAppSelector((state) => state.users.error)
 
@@ -38,8 +38,8 @@ const Table = () => {
   const renderTableBody = () => {
     if (loading) return <LoadingState />
     if (error) return <ErrorState error={error} />
-    if (users && users.length > 0) {
-      return users.map((user) => (
+    if (filteredUsers && filteredUsers.length > 0) {
+      return filteredUsers.map((user) => (
         <tr key={user.id}>
           <td>{user.name}</td>
           <td>{user.username}</td>

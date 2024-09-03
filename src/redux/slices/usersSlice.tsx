@@ -18,9 +18,26 @@ export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    // initUsers: (state, action) => { 
-    //   state.entities = action.payload
-    // },
+    filterByName: (state, action: PayloadAction<string>) => {
+      state.filteredEntities = state.entities.filter((user) =>
+        user.name.toLowerCase().includes(action.payload.toLowerCase()),
+      )
+    },
+    filterByUsername: (state, action: PayloadAction<string>) => {
+      state.filteredEntities = state.entities.filter((user) =>
+        user.username.toLowerCase().includes(action.payload.toLowerCase()),
+      )
+    },
+    filterByEmail: (state, action: PayloadAction<string>) => {
+      state.filteredEntities = state.entities.filter((user) =>
+        user.email.toLowerCase().includes(action.payload.toLowerCase()),
+      )
+    },
+    filterByPhone: (state, action: PayloadAction<string>) => {
+      state.filteredEntities = state.entities.filter((user) =>
+        user.phone.toLowerCase().includes(action.payload.toLowerCase()),
+      )
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -30,6 +47,7 @@ export const usersSlice = createSlice({
       })
       .addCase(fetchUsers.fulfilled, (state, action: PayloadAction<User[]>) => {
         state.entities = action.payload
+        state.filteredEntities = action.payload
         state.loading = false
       })
       .addCase(fetchUsers.rejected, (state, action) => {
@@ -39,6 +57,6 @@ export const usersSlice = createSlice({
   },
 })
 
-// export const { initUsers } = usersSlice.actions
+export const { filterByName, filterByUsername, filterByEmail, filterByPhone } = usersSlice.actions
 
 export default usersSlice.reducer
