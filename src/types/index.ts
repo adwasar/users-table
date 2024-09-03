@@ -31,6 +31,7 @@ export interface User {
 
 export interface UsersSlice {
   entities: User[]
+  filteredEntities: User[]
   loading: boolean
   error: string | null
 }

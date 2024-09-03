@@ -9,6 +9,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 
 const initialState: UsersSlice = {
   entities: [],
+  filteredEntities: [],
   loading: false,
   error: null,
 }
