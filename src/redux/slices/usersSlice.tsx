@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
-import type { UsersSlice, User } from '@/types'
+import type { UsersSlice, User, FilterPayload } from '@/types'
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await fetch('https://jsonplaceholder.typicode.com/users')
@@ -10,6 +10,12 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
 const initialState: UsersSlice = {
   entities: [],
   filteredEntities: [],
+  filters: {
+    name: '',
+    username: '',
+    email: '',
+    phone: '',
+  },
   loading: false,
   error: null,
 }
@@ -18,25 +24,17 @@ export const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    filterByName: (state, action: PayloadAction<string>) => {
-      state.filteredEntities = state.entities.filter((user) =>
-        user.name.toLowerCase().includes(action.payload.toLowerCase()),
-      )
-    },
-    filterByUsername: (state, action: PayloadAction<string>) => {
-      state.filteredEntities = state.entities.filter((user) =>
-        user.username.toLowerCase().includes(action.payload.toLowerCase()),
-      )
-    },
-    filterByEmail: (state, action: PayloadAction<string>) => {
-      state.filteredEntities = state.entities.filter((user) =>
-        user.email.toLowerCase().includes(action.payload.toLowerCase()),
-      )
-    },
-    filterByPhone: (state, action: PayloadAction<string>) => {
-      state.filteredEntities = state.entities.filter((user) =>
-        user.phone.toLowerCase().includes(action.payload.toLowerCase()),
-      )
+    setFilter: (state, action: PayloadAction<FilterPayload>) => {
+      state.filters[action.payload.filter] = action.payload.value.toLowerCase()
+
+      state.filteredEntities = state.entities.filter((user) => {
+        return (
+          user.name.toLowerCase().includes(state.filters.name) &&
+          user.username.toLowerCase().includes(state.filters.username) &&
+          user.email.toLowerCase().includes(state.filters.email) &&
+          user.phone.toLowerCase().includes(state.filters.phone)
+        )
+      })
     },
   },
   extraReducers: (builder) => {
@@ -57,6 +55,6 @@ export const usersSlice = createSlice({
   },
 })
 
-export const { filterByName, filterByUsername, filterByEmail, filterByPhone } = usersSlice.actions
+export const { setFilter } = usersSlice.actions
 
 export default usersSlice.reducer

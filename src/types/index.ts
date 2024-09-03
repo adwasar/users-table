@@ -28,10 +28,22 @@ export interface User {
   company: Company
 }
 
+export interface Filter {
+  name: string
+  username: string
+  email: string
+  phone: string
+}
+
+export interface FilterPayload {
+  filter: keyof Filter;
+  value: string
+}
 
 export interface UsersSlice {
   entities: User[]
   filteredEntities: User[]
+  filters: Filter
   loading: boolean
   error: string | null
 }
