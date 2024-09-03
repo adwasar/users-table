@@ -3,6 +3,8 @@ import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { fetchUsers } from '@/redux/slices/usersSlice'
 
+import Input from '@/components/Input/Input'
+
 import styles from './Table.module.scss'
 
 const Table = () => {
@@ -16,7 +18,7 @@ const Table = () => {
   }, [dispatch])
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.container}>
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
       {users && users.length > 0 ? (
@@ -30,6 +32,12 @@ const Table = () => {
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td><Input filterBy="name"/></td>
+              <td><Input filterBy="username"/></td>
+              <td><Input filterBy="email"/></td>
+              <td><Input filterBy="phone"/></td>
+            </tr>
             {users.map((el) => (
               <tr key={el.id}>
                 <td>{el.name}</td>
